@@ -19,6 +19,7 @@ const AIComposer = () => {
   const [generateImage, setGenerateImage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [generations, setGenerations] = useState<any[]>([]);
+  const [error, setError] = useState("");
 
   // Scheduling state
   const [activeScheduler, setActiveScheduler] = useState<any>(null);
@@ -26,6 +27,7 @@ const AIComposer = () => {
   const [scheduledDate, setScheduledDate] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
   const [scheduling, setScheduling] = useState(false);
+  const [scheduleError, setScheduleError] = useState("");
 
   const fetchGenerations = async () => {
     setGenerations(dummyGenerationData);
@@ -36,6 +38,12 @@ const AIComposer = () => {
   }, []);
 
   const handleGenerate = async () => {
+    if (!prompt.trim()) {
+      setError("Please enter a prompt");
+      return;
+    }
+
+    setError("");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -43,11 +51,43 @@ const AIComposer = () => {
   };
 
   const handleSchedulePost = async () => {
+    setScheduleError("");
+
+    // Basic validation
+    if (selectedPlatforms.length === 0) {
+      setScheduleError("Please select at least one platform");
+      return;
+    }
+
+    if (!scheduledDate || !scheduledTime) {
+      setScheduleError("Please select a date and time");
+      return;
+    }
+
+    const scheduledIso = `${scheduledDate}T${scheduledTime}`;
+    const scheduledAt = new Date(scheduledIso);
+    if (isNaN(scheduledAt.getTime()) || scheduledAt <= new Date()) {
+      setScheduleError("Please choose a future date and time");
+      return;
+    }
+
     setScheduling(true);
-    // Simulate API call to schedule the post
-    setTimeout(() => {
+    try {
+      // Simulate API call to schedule the post
+      await new Promise((res) => setTimeout(res, 2000));
+
+      // On success clear scheduling state and close modal
+      setSelectedPlatforms([]);
+      setScheduledDate("");
+      setScheduledTime("");
+      setActiveScheduler(null);
+    } catch (err: any) {
+      console.error(err);
+      setScheduleError(err?.message || "Failed to schedule post");
+      throw err;
+    } finally {
       setScheduling(false);
-    }, 2000);
+    }
   };
 
   const tones = [
@@ -73,6 +113,9 @@ const AIComposer = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
+          {error && (
+            <p className="text-sm text-red-500 mt-2">{error}</p>
+          )}
 
           <div className="absolute bottom-4 right-2.5 flex items-center gap-3 text-sm">
             <button
@@ -304,6 +347,10 @@ const AIComposer = () => {
                     </div>
                   </div>
                 </div>
+
+                {scheduleError && (
+                  <p className="text-sm text-red-500">{scheduleError}</p>
+                )}
 
                 <button
                   onClick={handleSchedulePost}
