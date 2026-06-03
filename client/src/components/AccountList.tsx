@@ -6,10 +6,23 @@ import {
 } from "lucide-react"
 import { PLATFORMS } from "../assets/assets"
 
+interface Account {
+  _id: string
+  zernioAccountId: string
+  createdAt: string
+  handle: string
+  platform: string
+  status: "connected" | "disconnected"
+  updatedAt: string
+  user: string
+}
+
 interface AccountListProps {
-  accounts: any[]
+  accounts: Account[]
   onDisconnect: (accountId: string) => Promise<void>
 }
+
+export type { Account }
 
 const AccountList = ({
   accounts,
@@ -52,7 +65,7 @@ const AccountList = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {accounts.map((account, index) => {
+      {accounts.map((account) => {
         const meta = PLATFORMS.find(
           (p) => p.id === account.platform
         )
@@ -61,7 +74,7 @@ const AccountList = ({
 
         return (
           <div
-            key={index}
+            key={account._id}
             className="group bg-white border border-slate-200
             rounded-2xl p-5 flex items-center gap-4
             hover:border-slate-300 transition-all"

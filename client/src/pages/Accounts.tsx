@@ -1,41 +1,42 @@
 import { useState, useEffect } from "react"
 import { PlusIcon } from "lucide-react"
 import AccountList from "../components/AccountList"
+import type { Account } from "../components/AccountList"
 import PlatformPickerModal from "../components/PlatformPickerModal"
 import { dummyAccountsData, PLATFORMS } from "../assets/assets"
 
 const Accounts = () => {
-  const [accounts, setAccounts] = useState<any[]>([])
+  const [accounts, setAccounts] = useState<Account[]>([])
   const [connecting, setConnecting] = useState<string | null>(null)
   const [showPlatformPicker, setShowPlatformPicker] = useState(false)
 
-  const fetchAccounts = async (
-    isSync = false,
-    platform?: string | null,
-    successMsg?: string
-  ) => {
-    setAccounts(dummyAccountsData)
-    console.log(isSync, platform, successMsg)
+  const fetchAccounts = async () => {
+    setAccounts(dummyAccountsData as Account[])
   }
 
   useEffect(() => {
-    fetchAccounts()
+    ;(async () => {
+      await fetchAccounts()
+    })()
   }, [])
 
   const handleConnect = async (platformId: string) => {
+    if (connecting === platformId) return
+
     setConnecting(platformId)
 
     setTimeout(() => {
-      setConnecting(null)
-
       const account = dummyAccountsData.find(
         (a) => a.platform === platformId
       )
 
       if (account) {
-        setAccounts((prev) => [...prev, account])
+        setAccounts((prev) =>
+          prev.some((a) => a.platform === platformId) ? prev : [...prev, account as Account]
+        )
       }
 
+      setConnecting(null)
       setShowPlatformPicker(false)
     }, 1000)
   }
