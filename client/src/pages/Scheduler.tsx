@@ -21,6 +21,7 @@ interface SchedulerPost {
   updatedAt: string
   mediaType?: string
   mediaUrl?: string
+  mediaFile?: File
 }
 
 const Scheduler = () => {
@@ -76,10 +77,23 @@ const Scheduler = () => {
     setLoading(true);
 
     setTimeout(() => {
-      const scheduledFor = new Date(
-        `${scheduledDate}T${scheduledTime}`
-      ).toISOString();
-      const newPost = {
+      // validate date/time inputs before constructing the scheduled date
+      if (!scheduledDate || !scheduledTime) {
+        alert("Please provide both a date and time for scheduling.");
+        setLoading(false);
+        return;
+      }
+
+      const d = new Date(`${scheduledDate}T${scheduledTime}`);
+      if (isNaN(d.getTime())) {
+        alert("Invalid date or time provided. Please check your inputs.");
+        setLoading(false);
+        return;
+      }
+
+      const scheduledFor = d.toISOString();
+
+      const newPost: SchedulerPost = {
         _id: `local-${Date.now()}`,
         user: "local-user",
         content,
@@ -93,7 +107,11 @@ const Scheduler = () => {
             ? "image"
             : "video"
           : undefined,
-        mediaUrl: mediaPreviewUrl ?? undefined,
+        // Do NOT store the transient blob URL (mediaPreviewUrl) as mediaUrl
+        // because it will be revoked by the preview cleanup; instead keep
+        // the File object on the post so the data remains available for
+        // later upload or processing.
+        mediaFile: mediaFile ?? undefined,
       };
 
       setPosts((prev) => [...prev, newPost]);
