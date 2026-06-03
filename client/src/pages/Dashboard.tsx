@@ -12,7 +12,37 @@ import {
   TrendingUpIcon,
   Activity,
   SendIcon,
+  BookmarkIcon,
 } from 'lucide-react'
+
+const getGreeting = () => {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 18) return 'Good afternoon'
+  if (hour < 21) return 'Good evening'
+  return 'Good night'
+}
+
+const ACTION_META: Record<string, { label: string; IconComponent: typeof SendIcon; bgClass: string; textClass: string }> = {
+  POST_PUBLISHED: {
+    label: 'Published',
+    IconComponent: SendIcon,
+    bgClass: 'bg-zinc-100',
+    textClass: 'text-zinc-600',
+  },
+  POST_SCHEDULED: {
+    label: 'Scheduled',
+    IconComponent: ClockIcon,
+    bgClass: 'bg-blue-100',
+    textClass: 'text-blue-600',
+  },
+  POST_SAVED: {
+    label: 'Saved',
+    IconComponent: BookmarkIcon,
+    bgClass: 'bg-amber-100',
+    textClass: 'text-amber-600',
+  },
+}
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -21,7 +51,7 @@ const Dashboard = () => {
     connectedAccounts: 0,
   })
 
-  const [activities, setActivities] = useState<any[]>([])
+  const [activities, setActivities] = useState<{ actionType: string; _id: string; createdAt: string; description: string }[]>([])
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -36,13 +66,13 @@ const Dashboard = () => {
 
         setStats({
           scheduled: posts.filter(
-            (p: any) => p.status === 'scheduled'
+            (p: Record<string, unknown>) => p.status === 'scheduled'
           ).length,
           published: posts.filter(
-            (p: any) => p.status === 'published'
+            (p: Record<string, unknown>) => p.status === 'published'
           ).length,
           connectedAccounts: accountsRes.data.filter(
-            (a: any) => a.status === 'connected'
+            (a: Record<string, unknown>) => a.status === 'connected'
           ).length,
         })
 
@@ -80,7 +110,7 @@ const Dashboard = () => {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl text-slate-900">
-          Good morning! 👋
+          {getGreeting()}! 👋
         </h2>
 
         <p className="text-slate-500 text-sm mt-0.5">
@@ -137,34 +167,39 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="divide-y divide-slate-50">
-            {activities.map((activity) => (
-              <div
-                key={activity._id}
-                className="flex items-start gap-4 px-6 py-4 hover:bg-slate-50/50 transition-colors"
-              >
-                <div className="size-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 bg-zinc-100 text-zinc-600">
-                  <SendIcon className="size-4" />
-                </div>
+            {activities.map((activity) => {
+              const meta = ACTION_META[activity.actionType] || ACTION_META.POST_PUBLISHED
+              const Icon = meta.IconComponent
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600">
-                      Published
-                    </span>
-
-                    <span className="text-xs text-slate-400 shrink-0">
-                      {new Date(
-                        activity.createdAt
-                      ).toLocaleString()}
-                    </span>
+              return (
+                <div
+                  key={activity._id}
+                  className="flex items-start gap-4 px-6 py-4 hover:bg-slate-50/50 transition-colors"
+                >
+                  <div className={`size-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${meta.bgClass} ${meta.textClass}`}>
+                    <Icon className="size-4" />
                   </div>
 
-                  <p className="text-sm text-slate-600">
-                    {activity.description}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${meta.bgClass} ${meta.textClass}`}>
+                        {meta.label}
+                      </span>
+
+                      <span className="text-xs text-slate-400 shrink-0">
+                        {new Date(
+                          activity.createdAt
+                        ).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-slate-600">
+                      {activity.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
