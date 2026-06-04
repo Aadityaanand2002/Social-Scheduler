@@ -1,6 +1,7 @@
+import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
-import type { FormEvent } from "react";
-import { dummyPostsData, PLATFORMS } from "../assets/assets";
+// Removed FormEvent as it is unused locally, standard React.FormEvent is fine
+import { PLATFORMS } from "../assets/assets";
 import {
   ClockIcon,
   XIcon,
@@ -9,19 +10,21 @@ import {
   CalendarDaysIcon,
   SendIcon,
 } from "lucide-react";
+import api from "../api/axios";
+
 
 interface SchedulerPost {
-  _id: string
-  user: string
-  content: string
-  platforms: string[]
-  scheduledFor: string
-  status: string
-  createdAt: string
-  updatedAt: string
-  mediaType?: string
-  mediaUrl?: string
-  mediaFile?: File
+  _id: string;
+  user: string;
+  content: string;
+  platforms: string[];
+  scheduledFor: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  mediaType?: string;
+  mediaUrl?: string;
+  mediaFile?: File;
 }
 
 const Scheduler = () => {
@@ -34,34 +37,35 @@ const Scheduler = () => {
   const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // ADDED: Create local URL for previewing selected files
+  useEffect(() => {
+    if (!mediaFile) {
+      setMediaPreviewUrl(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(mediaFile);
+    setMediaPreviewUrl(objectUrl);
+    
+    // Free memory when component unmounts or file changes
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [mediaFile]);
+
   const fetchPosts = async () => {
-    setPosts(dummyPostsData);
+    try {
+      const { data } = await api.get("/api/posts");
+      setPosts(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   useEffect(() => {
-    ;(async () => await fetchPosts())()
+    (async () => await fetchPosts())();
+
+    const interval = setInterval(async () => await fetchPosts(), 10000);
+
+    return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    let previewUrl: string | null = null;
-    let timeoutId: number | null = null;
-
-    if (mediaFile) {
-      previewUrl = URL.createObjectURL(mediaFile);
-      timeoutId = window.setTimeout(() => setMediaPreviewUrl(previewUrl), 0);
-    } else {
-      timeoutId = window.setTimeout(() => setMediaPreviewUrl(null), 0);
-    }
-
-    return () => {
-      if (timeoutId !== null) {
-        window.clearTimeout(timeoutId);
-      }
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [mediaFile]);
 
   const scheduled = posts.filter((p) => p.status === "scheduled");
   const published = posts.filter((p) => p.status === "published");
@@ -71,57 +75,53 @@ const Scheduler = () => {
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
     );
 
-  const handleSchedule = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (selectedPlatforms.length === 0) {
+      toast.error("Select at least one platform");
+      return;
+    }
+
+    if (!scheduledDate || !scheduledTime) {
+      toast.error("Select date and time");
+      return;
+    }
+
+    if (selectedPlatforms.includes("instagram") && !mediaFile) {
+      toast.error("Instagram requires an image or video");
+      return;
+    }
+
+    const scheduledFor = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
+
+    const formData = new FormData();
+    formData.append("content", content);
+    formData.append("scheduledFor", scheduledFor);
+    formData.append("status", "scheduled");
+    formData.append("platforms", JSON.stringify(selectedPlatforms));
+
+    if (mediaFile) formData.append("media", mediaFile);
+
     setLoading(true);
+    try {
+      await api.post("/api/posts", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    setTimeout(() => {
-      // validate date/time inputs before constructing the scheduled date
-      if (!scheduledDate || !scheduledTime) {
-        alert("Please provide both a date and time for scheduling.");
-        setLoading(false);
-        return;
-      }
+      toast.success("Post scheduled!");
 
-      const d = new Date(`${scheduledDate}T${scheduledTime}`);
-      if (isNaN(d.getTime())) {
-        alert("Invalid date or time provided. Please check your inputs.");
-        setLoading(false);
-        return;
-      }
-
-      const scheduledFor = d.toISOString();
-
-      const newPost: SchedulerPost = {
-        _id: `local-${Date.now()}`,
-        user: "local-user",
-        content,
-        platforms: selectedPlatforms,
-        scheduledFor,
-        status: "scheduled",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        mediaType: mediaFile
-          ? mediaFile.type.startsWith("image/")
-            ? "image"
-            : "video"
-          : undefined,
-        // Do NOT store the transient blob URL (mediaPreviewUrl) as mediaUrl
-        // because it will be revoked by the preview cleanup; instead keep
-        // the File object on the post so the data remains available for
-        // later upload or processing.
-        mediaFile: mediaFile ?? undefined,
-      };
-
-      setPosts((prev) => [...prev, newPost]);
-      setLoading(false);
       setContent("");
-      setSelectedPlatforms([]);
       setScheduledDate("");
       setScheduledTime("");
+      setSelectedPlatforms([]);
       setMediaFile(null);
-    }, 1000);
+      fetchPosts();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -350,7 +350,7 @@ const Scheduler = () => {
           </div>
         </div>
         
-        {/* Published (Coming Soon) */}
+        {/* Published */}
          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="flex items-center gap-2.5 px-5 py-4 border-b border-slate-100">
             <SendIcon className="size-4 text-zinc-500" />
