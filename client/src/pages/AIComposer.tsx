@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-// Assuming dummyGenerationData is exported from your assets file
-import { dummyGenerationData, PLATFORMS } from "../assets/assets";
+import { PLATFORMS } from "../assets/assets";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 import {
   Loader2Icon,
@@ -30,7 +31,12 @@ const AIComposer = () => {
   const [scheduleError, setScheduleError] = useState("");
 
   const fetchGenerations = async () => {
-    setGenerations(dummyGenerationData);
+    try {
+      const { data } = await api.get("api/posts/generations");
+      setGenerations(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   useEffect(() => {
@@ -38,53 +44,67 @@ const AIComposer = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) {
-      setError("Please enter a prompt");
+    if (!prompt) {
+      toast.error("Please enter a prompt");
       return;
     }
 
-    setError("");
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      const { data } = await api.post("/api/posts/generate", {
+        prompt,
+        tone,
+        generateImage,
+      });
+
+      setGenerations([data, ...generations]);
+      setActiveScheduler(data);
+      toast.success("Content generated!");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
-  const handleSchedulePost = async () => {
-    setScheduleError("");
+  const handleSchedule = async () => {
+    if (!activeScheduler) return;
 
-    // Basic validation
     if (selectedPlatforms.length === 0) {
-      setScheduleError("Please select at least one platform");
+      toast.error("Select at least one platform");
       return;
     }
 
     if (!scheduledDate || !scheduledTime) {
-      setScheduleError("Please select a date and time");
+      toast.error("Select date and time");
       return;
     }
 
-    const scheduledIso = `${scheduledDate}T${scheduledTime}`;
-    const scheduledAt = new Date(scheduledIso);
-    if (isNaN(scheduledAt.getTime()) || scheduledAt <= new Date()) {
-      setScheduleError("Please choose a future date and time");
-      return;
-    }
+    const scheduledFor = new Date(
+      `${scheduledDate}T${scheduledTime}`
+    ).toISOString();
 
     setScheduling(true);
-    try {
-      // Simulate API call to schedule the post
-      await new Promise((res) => setTimeout(res, 2000));
 
-      // On success clear scheduling state and close modal
+    try {
+      await api.post("/api/posts", {
+        content: activeScheduler.content,
+        mediaUrl: activeScheduler.mediaUrl,
+        mediaType: activeScheduler.mediaType,
+        platforms: selectedPlatforms,
+        scheduledFor,
+        status: "scheduled",
+      });
+
+      toast.success("AI Post scheduled!");
+
+      setActiveScheduler(null);
       setSelectedPlatforms([]);
       setScheduledDate("");
       setScheduledTime("");
-      setActiveScheduler(null);
-    } catch (err: any) {
-      console.error(err);
-      setScheduleError(err?.message || "Failed to schedule post");
-      throw err;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to schedule");
     } finally {
       setScheduling(false);
     }
@@ -113,9 +133,7 @@ const AIComposer = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          {error && (
-            <p className="text-sm text-red-500 mt-2">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
 
           <div className="absolute bottom-4 right-2.5 flex items-center gap-3 text-sm">
             <button
@@ -251,7 +269,9 @@ const AIComposer = () => {
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh]">
             {/* Modal Header */}
             <div className="flex items-center justify-between px-8 py-4 border-b border-slate-100 bg-slate-50/30">
-              <h3 className="text-slate-900 font-medium">Schedule Generation</h3>
+              <h3 className="text-slate-900 font-medium">
+                Schedule Generation
+              </h3>
 
               <button
                 onClick={() => setActiveScheduler(null)}
@@ -335,7 +355,7 @@ const AIComposer = () => {
                         onChange={(e) => setScheduledDate(e.target.value)}
                       />
                     </div>
-                    
+
                     <div className="relative">
                       <ClockIcon className="size-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
@@ -353,7 +373,7 @@ const AIComposer = () => {
                 )}
 
                 <button
-                  onClick={handleSchedulePost}
+                  onClick={handleSchedule}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-md bg-slate-200 text-slate-700 hover:bg-red-500 hover:text-white transition"
                 >
                   {scheduling ? (
@@ -361,7 +381,6 @@ const AIComposer = () => {
                   ) : (
                     <TimerIcon className="size-4" />
                   )}
-
                   Schedule Post
                 </button>
               </div>

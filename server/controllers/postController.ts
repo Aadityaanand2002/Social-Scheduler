@@ -3,37 +3,39 @@ import { AuthRequest } from "../middlewares/authMiddlewware.js";
 import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
 import { cloudinary } from "../config/cloudinary.js";
-import { Generation } from "../models/Generation.js"; 
+import { Generation } from "../models/Generation.js";
 import { Post } from "../models/Post.js";
 
 // Helper to poll Leonardo.ai
-const pollLeonardoJob = async (generationId: string, apiKey: string) : Promise<string> =>{
+const pollLeonardoJob = async (generationId: string, apiKey: string): Promise<string> => {
     const maxRetries = 20;
     const delay = 5000;
 
-    for(let i=0; i < maxRetries; i++){
+    for (let i = 0; i < maxRetries; i++) {
         try {
-            const response = await axios.get(`https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`, {headers: {
-                accept: "application/json", authorization: `Bearer ${apiKey}`
-            }})
+            const response = await axios.get(`https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`, {
+                headers: {
+                    accept: "application/json", authorization: `Bearer ${apiKey}`
+                }
+            })
 
             const generation = response.data.generations_by_pk;
 
-            if(generation.status === "COMPLETE"){
-                if(generation.generated_images && generation.generated_images.length > 0){
+            if (generation.status === "COMPLETE") {
+                if (generation.generated_images && generation.generated_images.length > 0) {
                     return generation.generated_images[0].url;
                 }
                 throw new Error("Generation complete but no images found.");
             }
 
-            if(generation.status === "FAILED"){
+            if (generation.status === "FAILED") {
                 throw new Error("Leonardo.ai generation failed.");
             }
 
         } catch (err: any) {
             console.error("Polling error:", err?.response?.data || err.message);
         }
-        
+
         await new Promise((resolve) => setTimeout(resolve, delay));
     }
     throw new Error("Leonardo.ai generation timed out.");
@@ -108,20 +110,20 @@ export const generatePost = async (req: AuthRequest, res: Response): Promise<voi
                                 "height": 1024,
                                 "prompt_enhance": "OFF"
                             }
-                        },{
-                            headers: {
-                                accept: "application/json",
-                                authorization: `Bearer ${leonardoKey}`,
-                                "content-type": "application/json",
-                            }
+                        }, {
+                        headers: {
+                            accept: "application/json",
+                            authorization: `Bearer ${leonardoKey}`,
+                            "content-type": "application/json",
                         }
+                    }
                     )
 
                     const generationId = leoResponse.data.generate.generationId;
 
                     const tempUrl = await pollLeonardoJob(generationId, leonardoKey);
                     // upload to cloudinary for persistence
-                    const uploadResult = await cloudinary.uploader.upload(tempUrl,{
+                    const uploadResult = await cloudinary.uploader.upload(tempUrl, {
                         folder: "ai-generations",
                     });
                     mediaUrl = uploadResult.secure_url;
@@ -166,7 +168,7 @@ export const getGenerations = async (req: AuthRequest, res: Response): Promise<v
 // Get posts
 // GET /api/posts
 export const getPosts = async (req: AuthRequest, res: Response): Promise<void> => {
-    try{
+    try {
         const posts = await Post.find({ user: req.user._id })
 
         res.json(posts)
@@ -214,7 +216,20 @@ export const schedulePost = async (req: AuthRequest, res: Response): Promise<voi
             mediaUrl = result.secure_url;
             mediaType = result.resource_type === "video" ? "video" : "image";
         }
-        
+
+        // Server-side validation: Instagram requires media
+        const platformsRequiringMedia = ["instagram"];
+        const needsMedia = parsedPlatforms.some((p: string) =>
+            platformsRequiringMedia.includes(p)
+        );
+
+        if (needsMedia && !mediaUrl) {
+            res.status(400).json({
+                message: "Instagram requires an image or video to be attached.",
+            });
+            return;
+        }
+
         const post = await Post.create({
             user: req.user._id,
             content,
