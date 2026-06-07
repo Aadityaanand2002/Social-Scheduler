@@ -124,29 +124,36 @@ const itemVariants: Variants = {
 
 const TypewriterText = ({ text, className, delay = 0 }: { text: string; className?: string; delay?: number }) => {
   return (
-    <motion.span 
+    <motion.span
       variants={{
         hidden: { opacity: 0 },
         visible: {
           opacity: 1,
           transition: { staggerChildren: 0.05, delayChildren: delay },
         },
-      }} 
-      initial="hidden" 
-      animate="visible" 
+      }}
+      initial="hidden"
+      animate="visible"
       className={className}
     >
-      {text.split('').map((char, index) => (
-        <motion.span 
-          key={`${char}-${index}`} 
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { opacity: 1, y: 0, transition: { type: 'spring', damping: 12, stiffness: 200 } },
-          }} 
-          className="inline-block whitespace-pre"
-        >
-          {char}
-        </motion.span>
+      {text.split(' ').map((word, wordIndex, array) => (
+        <span key={`${word}-${wordIndex}`}>
+          <span className="inline-block whitespace-nowrap">
+            {word.split('').map((char, charIndex) => (
+              <motion.span 
+                key={`${char}-${charIndex}`} 
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0, transition: { type: 'spring', damping: 12, stiffness: 200 } },
+                }} 
+                className="inline-block"
+              >
+                {char}
+              </motion.span>
+            ))}
+          </span>
+          {wordIndex !== array.length - 1 && " "}
+        </span>
       ))}
     </motion.span>
   )
@@ -315,11 +322,11 @@ const Dashboard = () => {
         <motion.div variants={itemVariants} className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 mb-2 uppercase tracking-widest">
-              <motion.span 
-                initial={{ scale: 0 }} 
-                animate={{ scale: 1 }} 
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
-                className="h-1.5 w-1.5 rounded-full bg-slate-900" 
+                className="h-1.5 w-1.5 rounded-full bg-slate-900"
               />
               <TypewriterText text="Welcome back" delay={0.3} />
             </div>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AnimatedLogo } from "../AnimatedLogo";
+import { motion } from "framer-motion";
 
 const footerLinks = {
     Product: ["Features", "How it works", "Pricing", "Changelog"],
@@ -50,11 +51,43 @@ export default function Footer() {
                     ))}
                 </div>
 
-                {/* Massive Typography */}
-                <div className="w-full overflow-hidden flex justify-center py-10 pointer-events-none select-none">
-                    <h1 className="text-[12vw] font-black text-slate-900/[0.03] tracking-tighter leading-none whitespace-nowrap">
-                        SOCIAL SCHEDULER
-                    </h1>
+                {/* Massive Cinematic Typography */}
+                <div className="w-full overflow-hidden flex justify-center py-32 pointer-events-none select-none [perspective:1000px]">
+                    <motion.div 
+                        className="flex whitespace-nowrap"
+                        variants={{
+                            animate: { transition: { staggerChildren: 0.1 } }
+                        }}
+                        initial="initial"
+                        animate="animate"
+                    >
+                        {"SOCIAL SCHEDULER".split("").map((char, index) => (
+                            <motion.span 
+                                key={index}
+                                variants={{
+                                    initial: { x: "50vw", y: 50, rotateZ: 30, rotateY: 90, opacity: 0, scale: 0.3 },
+                                    animate: { 
+                                        x: ["50vw", "0vw", "0vw", "-50vw"], 
+                                        y: [50, 0, 0, -50],
+                                        rotateZ: [30, 0, 0, -30],
+                                        rotateY: [90, 0, 0, -90],
+                                        opacity: [0, 1, 1, 0],
+                                        scale: [0.3, 1, 1, 0.3],
+                                        transition: { 
+                                            duration: 6,
+                                            times: [0, 0.25, 0.75, 1],
+                                            ease: "easeInOut",
+                                            repeat: Infinity,
+                                            repeatDelay: 1
+                                        }
+                                    }
+                                }}
+                                className="text-[12vw] font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-500 to-slate-900 tracking-tighter leading-none drop-shadow-2xl opacity-90 inline-block"
+                            >
+                                {char === " " ? "\u00A0" : char}
+                            </motion.span>
+                        ))}
+                    </motion.div>
                 </div>
 
                 {/* Bottom bar */}
