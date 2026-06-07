@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { MailIcon, LockIcon, ArrowRightIcon, User2Icon, PhoneIcon, LoaderCircleIcon, EyeIcon, EyeOffIcon } from "lucide-react";
@@ -60,9 +60,17 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [containerWidth, setContainerWidth] = useState<string | undefined>(undefined);
+    const containerRef = useRef<HTMLDivElement>(null);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { login, user } = useAuth();
+
+    useEffect(() => {
+        if (containerRef.current && containerRef.current.offsetWidth > 0) {
+            setContainerWidth(String(Math.min(containerRef.current.offsetWidth, 400)));
+        }
+    }, []);
 
     const requestedPlan = (searchParams.get("plan") || "").toLowerCase();
     const isYearly = searchParams.get("interval") === "yearly";
@@ -322,14 +330,17 @@ export default function Login() {
                             <div className="flex-1 h-px bg-slate-200" />
                         </div>
                         
-                        <div className="mt-6 w-full google-login-wrapper">
-                            <GoogleLogin
-                                onSuccess={handleGoogleSuccess}
-                                onError={() => toast.error("Google Login failed")}
-                                theme="outline"
-                                size="large"
-                                text={loginState ? "signin_with" : "signup_with"}
-                            />
+                        <div ref={containerRef} className="mt-6 w-full min-h-[44px] flex justify-center google-login-wrapper">
+                            {containerWidth && (
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={() => toast.error("Google Login failed")}
+                                    theme="outline"
+                                    size="large"
+                                    width={containerWidth}
+                                    text={loginState ? "signin_with" : "signup_with"}
+                                />
+                            )}
                         </div>
 
                         <p className="text-center text-sm text-slate-500 mt-6 font-medium">
