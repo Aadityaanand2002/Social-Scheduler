@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { AuthRequest } from '../middlewares/authMiddleware.js';
 import { cloudinary } from '../config/cloudinary.js';
 import { OAuth2Client } from 'google-auth-library';
+import axios from 'axios';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "placeholder");
 
@@ -98,11 +99,11 @@ export const googleLogin = async (req: Request, res: Response): Promise<void> =>
         let picture = "";
 
         try {
-            const ticket = await client.verifyIdToken({
-                idToken: credential,
-                audience: process.env.GOOGLE_CLIENT_ID,
+            // credential here is now an access_token because we are using useGoogleLogin hook
+            const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { Authorization: `Bearer ${credential}` }
             });
-            const payload = ticket.getPayload();
+            const payload = response.data;
             if (payload) {
                 email = payload.email || "";
                 name = payload.name || "";
@@ -110,8 +111,8 @@ export const googleLogin = async (req: Request, res: Response): Promise<void> =>
                 picture = payload.picture || "";
             }
         } catch (error) {
-             console.error("Google Auth verify error:", error);
-             res.status(401).json({ message: "Invalid Google token or Client ID not configured properly." });
+             console.error("Google Auth userinfo error:", error);
+             res.status(401).json({ message: "Invalid Google token or unable to fetch user info." });
              return;
         }
 
