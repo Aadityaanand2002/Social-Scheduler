@@ -41,7 +41,7 @@ export default function Hero() {
                         <div className="w-[400px] h-[500px] animate-float-3d relative group">
                             
                             {/* Rotating Border Layer */}
-                            <div className="absolute -inset-[2px] rounded-[42px] overflow-hidden pointer-events-none">
+                            <div className="absolute -inset-[2px] rounded-[42px] overflow-hidden pointer-events-none [-webkit-mask-image:-webkit-radial-gradient(white,black)]">
                                 <div className="absolute -left-[50%] -top-[50%] w-[200%] h-[200%] animate-[spin_4s_linear_infinite]">
                                     <div className="w-full h-full bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0%,rgba(0,0,0,1)_50%,transparent_100%)] animate-pulse" style={{ animationDuration: '2s' }} />
                                 </div>
