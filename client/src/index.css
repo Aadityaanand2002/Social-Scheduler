@@ -290,3 +290,16 @@ a, button {
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* ─── Google Login Overrides ───────────────────────────── */
+
+.google-login-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.google-login-wrapper > div,
+.google-login-wrapper iframe {
+    width: 100% !important;
+}

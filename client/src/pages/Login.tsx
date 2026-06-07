@@ -322,16 +322,14 @@ export default function Login() {
                             <div className="flex-1 h-px bg-slate-200" />
                         </div>
                         
-                        <div className="mt-6 flex justify-center w-full">
-                            <div className="w-full flex justify-center [&>div]:!w-full [&_iframe]:!w-full">
-                                <GoogleLogin
-                                    onSuccess={handleGoogleSuccess}
-                                    onError={() => toast.error("Google Login failed")}
-                                    theme="outline"
-                                    size="large"
-                                    text={loginState ? "signin_with" : "signup_with"}
-                                />
-                            </div>
+                        <div className="mt-6 w-full google-login-wrapper">
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={() => toast.error("Google Login failed")}
+                                theme="outline"
+                                size="large"
+                                text={loginState ? "signin_with" : "signup_with"}
+                            />
                         </div>
 
                         <p className="text-center text-sm text-slate-500 mt-6 font-medium">
