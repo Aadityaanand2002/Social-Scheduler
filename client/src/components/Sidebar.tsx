@@ -7,7 +7,6 @@ import {
   LinkIcon,
   LifeBuoyIcon,
   Settings2Icon,
-  HourglassIcon,
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
