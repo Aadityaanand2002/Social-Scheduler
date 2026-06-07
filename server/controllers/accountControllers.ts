@@ -1,78 +1,97 @@
 import { Response } from "express";
-// Note: Double-check if your filename actually has two 'w's! I fixed it to 'authMiddleware' here.
-import { AuthRequest } from "../middlewares/authMiddlewware.js";
+import { AuthRequest } from "../middlewares/authMiddleware.js";
 import { Account } from "../models/Account.js";
+import { getAccountPlanStatus } from "../utils/planLimits.js";
 import zernio from "../config/zernio.js";
 
-
-// Get all accounts
-// GET /api/accounts
-export const getAccounts = async (req: AuthRequest, res: Response) : Promise<void> =>{
+export const getAccounts = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const accounts = await Account.find({user: req.user._id})
-        res.json(accounts)
+        const planType = req.user?.planType || "starter";
+        const [accounts, plan] = await Promise.all([
+            Account.find({ user: req.user._id }),
+            getAccountPlanStatus(req.user._id.toString(), planType),
+        ]);
+
+        res.json({ accounts, plan });
     } catch (error: any) {
         res.status(500).json({ message: error?.message || "Server error" });
     }
-}
+};
 
-// Add account
-// POST /api/accounts
-
-export const addAccount = async (req: AuthRequest, res: Response) : Promise<void> =>{
+export const addAccount = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const {platform, handle, avatarUrl} = req.body;
+        const planType = req.user?.planType || "starter";
+        const plan = await getAccountPlanStatus(req.user._id.toString(), planType);
+
+        if (!plan.canConnectAccount) {
+            res.status(403).json({
+                message: `Your ${planType} plan allows only ${plan.limits.accounts} connected accounts.`,
+                plan,
+            });
+            return;
+        }
+
+        const { platform, handle, avatarUrl } = req.body;
+
+        const existingAccount = await Account.findOne({
+            user: req.user._id,
+            platform,
+            status: "connected",
+        });
+
+        if (existingAccount) {
+            res.status(400).json({ message: "Account already connected for this platform" });
+            return;
+        }
 
         const account = await Account.create({
             user: req.user._id,
             platform,
             handle,
-            avatarUrl
+            avatarUrl,
         });
 
-        res.status(201).json(account);
+        res.status(201).json({ account, plan: await getAccountPlanStatus(req.user._id.toString(), planType) });
     } catch (error: any) {
         res.status(500).json({ message: error?.message || "Server error" });
     }
-}
+};
 
-// Disconnect account
-// DELETE /api/accounts/:id
-
-export const disconnectAccount = async (req: AuthRequest, res: Response) : Promise<void> =>{
+export const disconnectAccount = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const account = await Account.findOne({
             _id: req.params.id,
-            user: req.user._id
+            user: req.user._id,
         });
 
-        if(!account){
+        if (!account) {
             res.status(404).json({ message: "Account not found" });
             return;
         }
 
-        if(account.zernioAccountId){
+        if (account.zernioAccountId) {
             try {
                 await zernio.accounts.deleteAccount({
                     path: {
-                        accountId: account.zernioAccountId
-                    }
+                        accountId: account.zernioAccountId,
+                    },
                 });
             } catch (error: any) {
                 res.status(500).json({
                     message:
                         error?.response?.data?.message ||
-                        error?.message
+                        error?.message,
                 });
                 return;
             }
         }
 
         await account.deleteOne();
-        res.json({ message: "Account disconnected successfully" })
+        const planType = req.user?.planType || "starter";
+        res.json({ message: "Account disconnected successfully", plan: await getAccountPlanStatus(req.user._id.toString(), planType) });
     } catch (error: any) {
         res.status(500).json({
-            message: error?.message || "Server error"
-        }); 
+            message: error?.message || "Server error",
+        });
     }
 }

@@ -10,4 +10,6 @@ const activityLogSchema = new mongoose.Schema({
 
 }, {timestamps: true})
 
+activityLogSchema.index({ user: 1, createdAt: -1 });
+
 export const ActivityLog = mongoose.model("ActivityLog", activityLogSchema)

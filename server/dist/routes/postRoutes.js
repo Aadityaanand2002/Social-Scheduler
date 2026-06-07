@@ -1,0 +1,12 @@
+import express from "express";
+import { protect } from "../middlewares/authMiddleware.js";
+import { generatePost, getGenerations, getPosts, schedulePost, updatePost, deletePost, } from "../controllers/postController.js";
+import { upload } from "../config/multer.js";
+const postRouter = express.Router();
+postRouter.get("/", protect, getPosts);
+postRouter.get("/generations", protect, getGenerations);
+postRouter.post("/", protect, upload.single("media"), schedulePost);
+postRouter.patch("/:id", protect, upload.single("media"), updatePost);
+postRouter.delete("/:id", protect, deletePost);
+postRouter.post("/generate", protect, generatePost);
+export default postRouter;

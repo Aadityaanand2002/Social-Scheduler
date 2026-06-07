@@ -12,4 +12,6 @@ const accountSchema = new mongoose.Schema({
     avatarUrl: { type: String },
 }, {timestamps: true})
 
+accountSchema.index({ user: 1, status: 1 });
+
 export const Account = mongoose.model("Account", accountSchema)

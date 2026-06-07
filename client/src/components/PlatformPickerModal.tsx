@@ -19,14 +19,14 @@ const PlatformPickerModal = ({
   onConnect,
 }: PlatformPickerModalProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-100">
-        <div className="flex items-center justify-between px-6 py-4 shadow">
-          <h3 className="text-slate-700">Choose a Platform</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-200">
+        <div className="flex items-center justify-between px-6 py-4 shadow-sm border-b border-slate-100">
+          <h3 className="text-slate-900 font-bold">Choose a Platform</h3>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
+            className="p-2 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors"
           >
             <XIcon className="size-4" />
           </button>
@@ -46,7 +46,7 @@ const PlatformPickerModal = ({
                 text-left transition-all ${
                   isConnected
                     ? "border-emerald-200 bg-emerald-50 cursor-default"
-                    : "border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 cursor-pointer"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm cursor-pointer"
                 } ${isConnecting && "opacity-80"}`}
               >
                 {/* Icon */}
@@ -61,14 +61,14 @@ const PlatformPickerModal = ({
                 {/* Label */}
                 <div className="flex-1 min-w-0">
                   <div
-                    className={`text-sm ${
-                      isConnected ? "text-emerald-700" : "text-slate-800"
+                    className={`text-sm font-bold ${
+                      isConnected ? "text-emerald-700" : "text-slate-900"
                     }`}
                   >
                     {p.name}
                   </div>
 
-                  <div className="text-xs text-slate-500 truncate">
+                  <div className="text-xs text-slate-500 font-medium truncate">
                     {isConnected
                       ? "Already connected"
                       : p.description}
@@ -77,15 +77,15 @@ const PlatformPickerModal = ({
 
                 {/* Status */}
                 {isConnected && (
-                  <CheckCircleIcon className="size-4 text-emerald-500 shrink-0" />
+                  <CheckCircleIcon className="size-4 text-emerald-600 shrink-0" />
                 )}
 
                 {isConnecting && (
-                  <div className="size-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin shrink-0" />
+                  <div className="size-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin shrink-0" />
                 )}
 
                 {!isConnected && !isConnecting && (
-                  <ExternalLinkIcon className="size-3.5 text-slate-400 shrink-0" />
+                  <ExternalLinkIcon className="size-3.5 text-slate-500 shrink-0" />
                 )}
               </button>
             )

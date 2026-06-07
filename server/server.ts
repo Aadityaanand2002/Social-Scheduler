@@ -7,19 +7,21 @@ import socialAuthRouter from "./routes/socialAuthRoutes.js";
 import accountRouter from "./routes/accountRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import activityRouter from "./routes/activityRoutes.js";
+import billingRouter from "./routes/billingRoutes.js";
+import supportRouter from "./routes/supportRoutes.js";
 import { initScheduler } from "./services/schedulerService.js";
 
 const app = express();
+const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
 
 await connectDB();
 
-// Middleware
-app.use(cors())
+app.use(cors({ origin: clientUrl }));
 app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
     res.send('Server is Live!');
 });
 
@@ -28,11 +30,11 @@ app.use("/api/oauth", socialAuthRouter)
 app.use("/api/accounts", accountRouter)
 app.use("/api/posts", postRouter)
 app.use("/api/activity", activityRouter)
+app.use("/api/billing", billingRouter)
+app.use("/api/support", supportRouter)
 
-// Intialize Scheduler
 initScheduler()
 
-// Global error handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err);
     res.status(500).send(err?.response?.data?.message || err?.message)
@@ -40,4 +42,4 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
-}); 
+});
