@@ -84,10 +84,10 @@ export default function Hero() {
                 </div>
 
                 {/* Right: Asymmetric Floating Cluster */}
-                <div className="flex-1 w-full mt-24 lg:mt-0 relative h-[600px] perspective-[2000px] z-10 hidden md:block">
+                <div className="flex-1 w-full mt-16 lg:mt-0 relative h-[500px] md:h-[600px] perspective-[2000px] z-10">
                     {/* Main floating light card Wrapper */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 perspective-[1000px] z-20">
-                        <div className="w-[400px] h-[500px] animate-float-3d relative group">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 perspective-[1000px] z-20 w-[90vw] sm:w-[400px]">
+                        <div className="w-full h-[450px] md:h-[500px] animate-float-3d relative group">
 
                             {/* Rotating Border Layer */}
                             <div className="absolute -inset-[2px] rounded-[42px] overflow-hidden pointer-events-none [-webkit-mask-image:-webkit-radial-gradient(white,black)]">
