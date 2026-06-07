@@ -1,9 +1,15 @@
-import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/authController.js";
+import express from 'express';
+import { changePassword, getCurrentUser, loginUser, registerUser, updateProfile, googleLogin } from '../controllers/authController.js';
+import { protect } from '../middlewares/authMiddleware.js';
+import { upload } from '../config/multer.js';
 
-const authRouter = Router();
+const router = express.Router();
 
-authRouter.post('/register', registerUser)
-authRouter.post('/login', loginUser)
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/google', googleLogin);
+router.get('/me', protect, getCurrentUser);
+router.put('/profile', protect, upload.single('avatar'), updateProfile);
+router.put('/change-password', protect, changePassword);
 
-export default authRouter;
+export default router;

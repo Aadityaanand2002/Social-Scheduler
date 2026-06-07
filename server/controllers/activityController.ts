@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { AuthRequest } from "../middlewares/authMiddlewware.js";
+import { AuthRequest } from "../middlewares/authMiddleware.js";
 import { ActivityLog } from "../models/ActivityLog.js";
 
 // Get all activity

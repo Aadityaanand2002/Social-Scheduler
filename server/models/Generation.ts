@@ -9,4 +9,6 @@ const generationSchema = new mongoose.Schema({
     tone: {type: String}
 }, {timestamps: true})
 
+generationSchema.index({ user: 1, createdAt: -1 });
+
 export const Generation = mongoose.model("Generation", generationSchema)

@@ -8,27 +8,39 @@ const footerLinks = {
 
 export default function Footer() {
     return (
-        <footer style={{ background: "#fafafa", borderTop: "1px solid rgba(0,0,0,0.07)" }}>
-            <div className="max-w-6xl mx-auto px-5 sm:px-8 py-16">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+        <footer className="bg-white border-t border-slate-200 relative overflow-hidden">
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-24 pb-12 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24">
                     {/* Brand */}
                     <div className="lg:col-span-2">
-                        <Link to="/" onClick={() => scrollTo(0, 0)} className="inline-flex items-center gap-2 mb-5">
-                            <img src="/logo.svg" alt="logo" className="size-6" />
-                            <span className="font-medium font-serif text-xl text-gray-800">Scheduler</span>
+                        <Link to="/" onClick={() => scrollTo(0, 0)} className="inline-flex items-center gap-3 mb-8 group">
+                            <img src="/logo.svg" alt="logo" className="size-8 group-hover:scale-105 transition-transform" />
+                            <span className="font-bold tracking-tight text-3xl text-slate-900">Scheduler</span>
                         </Link>
-                        <p className="text-sm text-gray-500 leading-relaxed max-w-xs">The AI-powered social media scheduler that helps creators and teams grow faster with less effort.</p>
+                        <p className="text-lg text-slate-600 font-medium leading-relaxed max-w-sm tracking-tight mb-8">
+                            The intelligent social media automation engine designed for hyper-growth.
+                        </p>
+                        <div className="flex items-center gap-4">
+                            {/* Social Placeholders */}
+                            <div className="size-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 cursor-pointer transition-colors shadow-sm">
+                                <svg viewBox="0 0 24 24" fill="currentColor" className="size-4 text-slate-400"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                            </div>
+                            <div className="size-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 cursor-pointer transition-colors shadow-sm">
+                                <svg viewBox="0 0 24 24" fill="currentColor" className="size-4 text-slate-400"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Links */}
                     {Object.entries(footerLinks).map(([category, links]) => (
                         <div key={category}>
-                            <div className="text-xs font-semibold uppercase tracking-widest mb-5 text-gray-600">{category}</div>
-                            <ul className="space-y-1">
+                            <div className="text-sm font-bold uppercase tracking-[0.15em] mb-8 text-slate-900">{category}</div>
+                            <ul className="space-y-4">
                                 {links.map((link) => (
                                     <li key={link}>
-                                        <a href="#" className="text-sm text-gray-500 hover:text-gray-900">
+                                        <a href="#" className="text-[15px] font-medium text-slate-500 hover:text-blue-600 transition-colors relative group">
                                             {link}
+                                            <span className="absolute -bottom-1 left-0 w-0 h-px bg-blue-600 transition-all group-hover:w-full" />
                                         </a>
                                     </li>
                                 ))}
@@ -37,19 +49,20 @@ export default function Footer() {
                     ))}
                 </div>
 
+                {/* Massive Typography */}
+                <div className="w-full overflow-hidden flex justify-center py-10 pointer-events-none select-none">
+                    <h1 className="text-[12vw] font-black text-slate-900/[0.03] tracking-tighter leading-none whitespace-nowrap">
+                        SOCIAL SCHEDULER
+                    </h1>
+                </div>
+
                 {/* Bottom bar */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: "1px solid rgba(0,0,0,0.07)" }}>
-                    <p className="text-xs text-gray-400">© {new Date().getFullYear()} Scheduler. All rights reserved.</p>
-                    <div className="flex items-center gap-6">
-                        <a href="#" className="text-xs text-gray-400 hover:text-gray-700">
-                            Privacy Policy
-                        </a>
-                        <a href="#" className="text-xs text-gray-400 hover:text-gray-700">
-                            Terms of Service
-                        </a>
-                        <Link to="/login" className="text-xs text-gray-400 hover:text-gray-700">
-                            Sign In
-                        </Link>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-10 border-t border-slate-200 mt-10">
+                    <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} Scheduler Inc. All rights reserved.</p>
+                    <div className="flex items-center gap-8">
+                        <a href="#" className="text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">Privacy</a>
+                        <a href="#" className="text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">Terms</a>
+                        <Link to="/login" className="text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">Sign In</Link>
                     </div>
                 </div>
             </div>

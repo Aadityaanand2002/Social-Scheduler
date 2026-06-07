@@ -1,6 +1,5 @@
 import {
   AlertCircleIcon,
-  CheckCircleIcon,
   PlusIcon,
   UnplugIcon,
 } from "lucide-react"
@@ -15,6 +14,7 @@ interface Account {
   status: "connected" | "disconnected"
   updatedAt: string
   user: string
+  avatarUrl?: string
 }
 
 interface AccountListProps {
@@ -23,6 +23,13 @@ interface AccountListProps {
 }
 
 export type { Account }
+
+const PLATFORM_ACCENT: Record<string, string> = {
+  instagram: "from-pink-500 via-rose-500 to-orange-400",
+  twitter: "from-slate-800 to-slate-900",
+  linkedin: "from-rose-600 to-rose-700",
+  facebook: "from-rose-500 to-rose-600",
+}
 
 const AccountList = ({
   accounts,
@@ -41,21 +48,21 @@ const AccountList = ({
   if (accounts.length === 0) {
     return (
       <div
-        className="bg-white rounded-2xl border-2 border-dashed border-slate-200
-        flex flex-col items-center justify-center py-20 px-6"
+        className="bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200
+        flex flex-col items-center justify-center py-20 px-6 animate-fade-in-up"
       >
         <div
-          className="size-14 bg-slate-50 rounded-2xl flex items-center
-          justify-center mb-4 border border-slate-100"
+          className="size-16 bg-white rounded-2xl flex items-center
+          justify-center mb-4 border border-slate-200 shadow-sm"
         >
-          <PlusIcon className="size-6 text-slate-500 opacity-50" />
+          <PlusIcon className="size-7 text-slate-400" />
         </div>
 
-        <p className="text-slate-700 text-lg">
+        <p className="text-slate-900 text-lg font-bold tracking-tight">
           No accounts connected
         </p>
 
-        <p className="text-sm text-slate-400 mt-1 max-w-xs text-center">
+        <p className="text-sm text-slate-500 font-medium mt-1.5 max-w-xs text-center leading-relaxed">
           Connect your first social platform to start scheduling
           and automating your content.
         </p>
@@ -65,52 +72,63 @@ const AccountList = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {accounts.map((account) => {
+      {accounts.map((account, index) => {
         const meta = PLATFORMS.find(
           (p) => p.id === account.platform
         )
 
         if (!meta) return null
 
+        const accent = PLATFORM_ACCENT[account.platform] || "from-slate-500 to-slate-600"
+        const isConnected = account.status === "connected"
+
         return (
           <div
             key={account._id}
-            className="group bg-white border border-slate-200
-            rounded-2xl p-5 flex items-center gap-4
-            hover:border-slate-300 transition-all"
+            className="group relative flex items-center gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-md animate-fade-in-up"
+            style={{ animationDelay: `${index * 0.08}s` }}
           >
-            <div
-              className="size-12 bg-slate-50 rounded-xl
-              flex items-center justify-center shrink-0"
-            >
-              <meta.icon className="size-6 text-slate-500" />
+            {/* Top accent gradient line on hover */}
+            <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
+
+            <div className="relative shrink-0 z-10">
+              <div
+                className={`size-12 rounded-2xl bg-gradient-to-br ${accent}
+                flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]`}
+              >
+                <meta.icon className="size-5 text-white" />
+              </div>
+              {/* Status dot */}
+              {isConnected && (
+                <span className="absolute -bottom-1 -right-1 size-4 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
+              )}
             </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="text-slate-900 truncate">
-                {account.handle}
+            <div className="flex-1 min-w-0 z-10">
+              <div className="text-slate-900 font-bold truncate group-hover:text-slate-700 transition-colors">
+                @{account.handle}
               </div>
 
-              <div className="text-sm text-slate-500 mt-0.5">
-                {meta.name}
+              <div className="text-sm text-slate-500 mt-0.5 flex items-center gap-2 font-medium">
+                <span className="font-semibold">{meta.name}</span>
+                <span className="text-slate-300">·</span>
+                <span className="text-xs text-slate-400">
+                  {new Date(account.createdAt).toLocaleDateString()}
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0">
-              {account.status === "connected" ? (
-                <>
-                  <CheckCircleIcon className="size-4 text-emerald-500" />
-                  <span className="text-xs text-emerald-600">
-                    Connected
-                  </span>
-                </>
+            <div className="flex items-center gap-2 shrink-0 z-10">
+              {isConnected ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-bold text-emerald-700 shadow-sm">
+                  <span className="size-1.5 rounded-full bg-emerald-500" />
+                  Connected
+                </span>
               ) : (
-                <>
-                  <AlertCircleIcon className="size-4 text-amber-500" />
-                  <span className="text-xs text-amber-600">
-                    Disconnected
-                  </span>
-                </>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-200 px-2.5 py-1 text-xs font-bold text-amber-700 shadow-sm">
+                  <AlertCircleIcon className="size-3" />
+                  Disconnected
+                </span>
               )}
 
               <button
@@ -118,8 +136,8 @@ const AccountList = ({
                   handleDisconnect(account._id)
                 }
                 title="Disconnect account"
-                className="ml-2 p-1.5 rounded-lg text-slate-300
-                group-hover:text-red-500 transition-all"
+                className="p-2 rounded-xl text-slate-400 bg-slate-50 border border-transparent
+                hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all duration-200"
               >
                 <UnplugIcon className="size-4" />
               </button>
