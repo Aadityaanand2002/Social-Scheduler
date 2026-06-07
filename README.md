@@ -1,207 +1,218 @@
 <div align="center">
   <img src="https://img.icons8.com/ios-filled/150/007ACC/calendar.png" alt="Social Scheduler Logo" width="120" />
 
-  # 🗓️ Social Scheduler 🗓️
-  
-  **The ultimate premium platform to automate and manage your social presence.**
+  # 🗓️ Social Scheduler
+  ### **Premium social media automation platform**
 
-  <p align="center">
-    [![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=007ACC)](https://reactjs.org/)
-    [![TypeScript](https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&logoColor=007ACC)](https://www.typescriptlang.org/)
-    [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-000000?style=for-the-badge&logo=tailwind-css&logoColor=007ACC)](https://tailwindcss.com/)
-    [![Node.js](https://img.shields.io/badge/Node.js-000000?style=for-the-badge&logo=node.js&logoColor=007ACC)](https://nodejs.org/)
-    [![MongoDB](https://img.shields.io/badge/MongoDB-000000?style=for-the-badge&logo=mongodb&logoColor=007ACC)](https://www.mongodb.com/)
-    [![License](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge&logoColor=007ACC)](https://opensource.org/licenses/MIT)
+  <p>
+    <img src="https://img.shields.io/badge/Design-Black%20%26%20White-000000?style=for-the-badge&logoColor=white" alt="Design Badge" />
+    <img src="https://img.shields.io/badge/Accent-Blue%20Shades-007ACC?style=for-the-badge&logoColor=white" alt="Accent Badge" />
+    <img src="https://img.shields.io/badge/Status-Production%20Ready-0A0A0A?style=for-the-badge&logoColor=007ACC" alt="Status Badge" />
   </p>
 
+  <p>
+    <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=007ACC" alt="React" /></a>
+    <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&logoColor=007ACC" alt="TypeScript" /></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-000000?style=for-the-badge&logo=tailwind-css&logoColor=007ACC" alt="Tailwind CSS" /></a>
+    <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-000000?style=for-the-badge&logo=node.js&logoColor=007ACC" alt="Node.js" /></a>
+    <a href="https://www.mongodb.com/"><img src="https://img.shields.io/badge/MongoDB-000000?style=for-the-badge&logo=mongodb&logoColor=007ACC" alt="MongoDB" /></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-000000?style=for-the-badge&logoColor=007ACC" alt="License" /></a>
+  </p>
+
+  <p>
+    <a href="https://github.com/Aadityaanand2002/Social-Scheduler/stargazers"><img src="https://img.shields.io/github/stars/Aadityaanand2002/Social-Scheduler?style=for-the-badge&color=007ACC&labelColor=000000" alt="Stars" /></a>
+    <a href="https://github.com/Aadityaanand2002/Social-Scheduler/network/members"><img src="https://img.shields.io/github/forks/Aadityaanand2002/Social-Scheduler?style=for-the-badge&color=007ACC&labelColor=000000" alt="Forks" /></a>
+    <a href="https://github.com/Aadityaanand2002/Social-Scheduler/issues"><img src="https://img.shields.io/github/issues/Aadityaanand2002/Social-Scheduler?style=for-the-badge&color=007ACC&labelColor=000000" alt="Issues" /></a>
+    <a href="https://github.com/Aadityaanand2002/Social-Scheduler/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Aadityaanand2002/Social-Scheduler?style=for-the-badge&color=007ACC&labelColor=000000" alt="GitHub License" /></a>
+  </p>
 </div>
 
----
+***
 
-## 🌌 Overview
+## ✨ Overview
 
-**Social Scheduler** is a state-of-the-art social media management tool designed for creators, agencies, and brands. Built with a sleek, **premium black and white UI with blue shades**, and powerful AI integrations, it allows you to effortlessly plan, create, and schedule your content across multiple platforms from a single, centralized dashboard.
+**Social Scheduler** is a modern social media management platform built for creators, agencies, and brands that want speed, consistency, and a premium workspace.
+It combines post planning, AI-assisted content generation, scheduling, account management, and media handling inside one centralized dashboard.
 
-## ⚡ The Problem & Our Solution
+### 🎯 Core Value
+- 🤖 AI-generated captions, content ideas, and hashtags.
+- 📅 Unified scheduling across multiple social platforms.
+- 🎨 Premium black, white, and blue design language.
+- ⚡ Fast full-stack architecture powered by TypeScript.
+- 🔐 Secure authentication with Google OAuth and JWT.
 
-### 🌑 The Problems Users Face
-- 🚧 **Writer's Block & Content Fatigue:** Coming up with fresh, high-quality captions and hashtags every single day is exhausting.
-- 🧩 **Platform Fragmentation:** Logging into Instagram, Twitter, LinkedIn, and Facebook separately just to post the same content wastes hours.
-- ⏱️ **Inconsistent Scheduling:** Missing peak engagement times because you forgot to manually hit "Publish."
-- 📉 **Poor User Experience:** Many existing legacy tools feel outdated, clunky, or require steep learning curves.
+***
 
-### 🌕 How We Overcome These Problems
-We built **Social Scheduler** to solve these pain points by offering an all-in-one, unified command center:
-1. 🤖 **AI-Powered Generation:** By integrating an intelligent **AI Composer**, we eliminate writer's block by automatically generating engaging copy and hashtags tailored to specific platforms.
-2. 🎛️ **Unified Dashboard:** We brought multiple platforms into one seamless interface, allowing users to schedule and publish everywhere with a single click.
-3. 💎 **Premium UI/UX:** We ditched the clunky dashboards of the past, utilizing **Tailwind CSS** and **Framer Motion** to deliver a sleek, glassmorphic, and highly intuitive experience that users actually *enjoy* interacting with.
-4. ⚙️ **Reliable Automation:** Our backend ensures posts go out exactly when scheduled, so creators can batch-create content and step away from their screens.
+## 🧩 Problem & Solution
 
----
+### Problems this solves
+- 🚧 Content creation becomes repetitive and mentally draining.
+- 🧱 Managing multiple social platforms separately wastes time.
+- ⏰ Manual posting leads to missed schedules and poor consistency.
+- 📉 Traditional dashboards often feel outdated and cluttered.
 
-## 🏗️ System Architecture
+### Social Scheduler approach
+- 🤖 **AI Composer** helps generate engaging captions and hashtag sets.
+- 🗂️ **Unified dashboard** manages posts, accounts, activity, billing, and support from one place.
+- 💎 **Premium UI/UX** uses sleek layouts, glass-like surfaces, and motion-rich interactions.
+- 🔁 **Automation-first workflow** lets users batch-create and schedule content with confidence.
 
-Social Scheduler follows a modern **Client-Server Architecture** utilizing RESTful API principles.
+***
+
+## 🏗️ Architecture
 
 ```mermaid
 graph TD
     subgraph Frontend
-        Client["💻 React Client (Vite, Tailwind, Framer Motion)"]
+        Client["💻 React Client (Vite + Tailwind + Framer Motion)"]
     end
 
     subgraph Backend
         API["⚙️ Express.js Server (Node.js)"]
     end
 
-    subgraph Database & Services
-        DB[("🍃 MongoDB (Data Storage)")]
-        Auth["🔐 Google OAuth (Auth SSO)"]
-        CDN["☁️ Cloudinary (Media CDN)"]
-        AI["🤖 AI Composer Service"]
+    subgraph Services
+        DB[("🍃 MongoDB")]
+        Auth["🔐 Google OAuth"]
+        CDN["☁️ Cloudinary"]
+        AI["🤖 AI Composer"]
     end
 
-    Client <-->|"REST API (JSON over HTTP)"| API
-    Client -.->|"SSO Login Flow"| Auth
-    API <-->|"Mongoose Queries"| DB
-    API <-->|"Upload & Fetch Images"| CDN
-    API <-->|"Generate Content"| AI
+    Client <-->|"REST API"| API
+    Client -.->|"SSO Login"| Auth
+    API <-->|"Mongoose"| DB
+    API <-->|"Media Uploads"| CDN
+    API <-->|"AI Generation"| AI
 ```
 
-- 🖥️ **Client Layer:** A single-page application (SPA) built with React and Vite. It handles state management locally via Context API and routes dynamically using React Router. UI elements are highly componentized for reusability.
-- 🌉 **API Layer:** An Express.js server acting as the bridge. It authenticates requests using JSON Web Tokens (JWT) attached to Authorization headers, processes business logic (billing, scheduling), and handles file uploads via Multer.
-- 🗄️ **Data Layer:** MongoDB serves as the primary database, mapped via Mongoose schemas to ensure strict typings. Cloudinary is used as a cloud CDN to securely store and serve user avatars and post media files.
-- 🔌 **External Integrations:** Google OAuth 2.0 API for seamless 1-click SSO, and third-party Social APIs (Facebook, Twitter, LinkedIn) for post distribution.
+### Architecture highlights
+- **Frontend:** React + Vite single-page application with reusable components and route-based views.
+- **Backend:** Express server handling authentication, business logic, scheduling, uploads, and integrations.
+- **Database:** MongoDB with Mongoose schemas for structured, scalable document modeling.
+- **Integrations:** Google OAuth, Cloudinary, and third-party social APIs for publishing workflows.
 
----
+***
 
-## 🔵 Languages & Core Technologies
+## 🛠️ Tech Stack
 
-This repository is predominantly built with **TypeScript**, ensuring a highly robust, strictly typed, and scalable codebase across both the frontend and backend. 
+### Frontend
+| Tech | Role |
+|------|------|
+| ⚛️ React 18 | Core UI library |
+| 🟦 TypeScript | Type-safe frontend architecture |
+| 🎨 Tailwind CSS | Utility-first premium styling |
+| 🪄 Framer Motion | Smooth animations and transitions |
+| 🧭 React Router v6 | Client-side navigation |
+| 🔥 React Hot Toast | Elegant notification system |
+| 🧾 React Hook Form | Form handling and validation |
 
-- **🟦 TypeScript (97.5%)**: The absolute backbone of Social Scheduler. We utilize TypeScript's powerful static typing to catch errors at compile-time, structure our React components with strict interfaces, and define our Mongoose database schemas securely. This guarantees enterprise-grade stability and an unparalleled developer experience.
-- **⬛ CSS (1.5%)**: Minimal raw CSS is used (`index.css`), as we rely heavily on the utility-first power of **Tailwind CSS** to craft our **premium black-and-white aesthetic with striking blue accents**.
-- **⬜ Other (1.0%)**: Includes configuration files, JSON, and build scripts that orchestrate our seamless development workflow.
+### Backend
+| Tech | Role |
+|------|------|
+| 🟢 Node.js | JavaScript runtime |
+| 🚂 Express.js | REST API framework |
+| 🍃 MongoDB | Primary database |
+| 🧬 Mongoose | Schema modeling |
+| 🔐 JWT | Auth token handling |
+| 🌐 Google OAuth 2.0 | Single sign-on authentication |
+| ☁️ Cloudinary | Media storage and delivery |
+| 📦 Multer | File upload middleware |
 
-### 💻 Frontend (Client)
-| Technology | Description |
-|------------|-------------|
-| ⚛️ **React 18 (Vite)** | Core UI library, providing a blazing fast developer experience |
-| 🛡️ **TypeScript** | Strongly typed, scalable architecture |
-| 🎨 **Tailwind CSS** | Utility-first styling for our premium design system |
-| 🪄 **Framer Motion** | For complex, buttery-smooth page transitions |
-| 🧭 **React Router v6** | Declarative, dynamic client-side routing |
+### Design language
+- ⚫ **Black** for strong premium contrast.
+- ⚪ **White** for clarity and clean spacing.
+- 🔵 **Blue shades** for modern highlights and visual identity.
 
-### ⚙️ Backend (Server)
-| Technology | Description |
-|------------|-------------|
-| 🟢 **Node.js** | Fast, asynchronous JavaScript runtime |
-| 🚂 **Express.js** | Minimalist web framework for building robust APIs |
-| 🍃 **MongoDB (Mongoose)** | Flexible NoSQL document database for our data layer |
-| 🔐 **Google OAuth 2.0 & JWT** | Highly secure authentication and Single Sign-On |
-| ☁️ **Cloudinary** | Fast, reliable cloud storage for user avatars and media |
+***
 
----
-
-## 📂 Folder Structure
+## 📁 Folder Structure
 
 ```text
 Social-Scheduler/
-├── client/                     # React Frontend
+├── client/
 │   ├── src/
-│   │   ├── api/                # Axios interceptors & HTTP config
-│   │   ├── components/         # Reusable UI components (Sidebar, Modals)
-│   │   ├── context/            # Global React Context (AuthContext)
-│   │   ├── pages/              # Full page views (Dashboard, Support, etc.)
-│   │   ├── App.tsx             # Main router & layout configuration
-│   │   └── index.css           # Global styles & Tailwind directives
-│   ├── tailwind.config.js      # Tailwind theme extensions & custom colors
-│   └── package.json            # Frontend dependencies
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── App.tsx
+│   │   └── index.css
+│   ├── tailwind.config.js
+│   └── package.json
 │
-└── server/                     # Node.js Backend
-    ├── config/                 # Database, Multer, & Cloudinary configs
-    ├── controllers/            # Route controllers containing business logic
-    ├── middlewares/            # Auth guards & global error handlers
-    ├── models/                 # Mongoose database schemas
-    ├── routes/                 # API route definitions
-    ├── utils/                  # Helper functions (Token generation, etc.)
-    ├── server.ts               # Main Express entry point
-    └── package.json            # Backend dependencies
+└── server/
+    ├── config/
+    ├── controllers/
+    ├── middlewares/
+    ├── models/
+    ├── routes/
+    ├── utils/
+    ├── server.ts
+    └── package.json
 ```
 
----
+***
 
-## 📡 API Reference
+## 🚀 Features
 
-Here is a high-level overview of our core RESTful API endpoints:
+- 📅 Schedule and manage social posts from one dashboard.
+- 🤖 Generate captions and hashtags with AI assistance.
+- 🔗 Connect and manage multiple social accounts.
+- 🖼️ Upload media securely with Cloudinary integration.
+- 📊 Track recent activity in a clean dashboard view.
+- 💳 Support premium billing and subscription workflows.
+- 🎟️ Built-in support ticket handling.
+- 🔐 Secure login with Google OAuth and JWT authentication.
 
-**🔑 Authentication Routes (`/api/auth`)**
-- 📝 `POST /register` - Create a new user account
-- 🔓 `POST /login` - Authenticate a user and return a JWT
-- 🌐 `POST /google` - Handle Google OAuth SSO
-- 👤 `GET /me` - Retrieve current authenticated user data
-- 🖼️ `PUT /profile` - Update user details and avatar (Multipart Form)
+***
 
-**🛠️ Core Feature Routes**
-- 📅 `GET/POST /api/posts` - Fetch user's scheduled posts or create a new post
-- 🔗 `GET/POST /api/accounts` - Manage connected social media accounts
-- 📊 `GET /api/activity` - Fetch the user's recent activity log
-- 🎟️ `GET/POST /api/support` - Create or fetch premium support tickets
-- 💳 `GET/POST /api/billing` - Handle subscription upgrades and payments
+## 📡 API Snapshot
 
----
+### Authentication
+- `POST /api/auth/register` — Create a new account.
+- `POST /api/auth/login` — Authenticate user and return JWT.
+- `POST /api/auth/google` — Sign in with Google OAuth.
+- `GET /api/auth/me` — Fetch authenticated user profile.
+- `PUT /api/auth/profile` — Update user profile and avatar.
 
-## 💻 Detailed Installation & Setup
+### Main modules
+- `GET/POST /api/posts` — Create and fetch scheduled posts.
+- `GET/POST /api/accounts` — Manage connected social accounts.
+- `GET /api/activity` — Retrieve recent activity logs.
+- `GET/POST /api/support` — Create and track support tickets.
+- `GET/POST /api/billing` — Manage plans and payments.
 
-Follow these steps to set up the project locally on your machine from scratch.
+***
 
-### 📋 Prerequisites
-- 📦 [Node.js](https://nodejs.org/) (v18 or higher)
-- 🍃 [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas cluster)
-- 🐙 [Git](https://git-scm.com/)
+## ⚙️ Installation
 
-### 1️⃣ Clone the repository
+### Prerequisites
+- Node.js v18+
+- MongoDB local instance or Atlas cluster
+- Git
 
+### Clone repository
 ```bash
 git clone https://github.com/Aadityaanand2002/Social-Scheduler.git
 cd Social-Scheduler
 ```
 
-### 2️⃣ Initialize and Install Backend
-
-Navigate to the `server` directory and install the necessary Node.js packages:
-
+### Backend setup
 ```bash
 cd server
-
-# Install core dependencies used in this project
 npm install express mongoose dotenv cors bcryptjs jsonwebtoken multer cloudinary
-
-# Install TypeScript and developer dependencies
 npm install -D typescript ts-node nodemon @types/express @types/mongoose
 ```
 
-### 3️⃣ Initialize and Install Frontend
-
-Open a new terminal, navigate to the `client` directory, and install the React packages:
-
+### Frontend setup
 ```bash
 cd client
-
-# If initializing from scratch:
-# npx create-vite@latest . --template react-ts
-
-# Install core UI dependencies
 npm install react-router-dom axios framer-motion lucide-react react-hot-toast react-hook-form
-
-# Install styling dependencies
 npm install -D tailwindcss postcss autoprefixer
 ```
 
-### 4️⃣ Configure Environment Variables
-
-You must create a `.env` file in both the `client` and `server` directories to configure your local environment.
-
-**`server/.env`**
+### Environment variables
+**server/.env**
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
@@ -213,51 +224,50 @@ CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-**`client/.env`**
+**client/.env**
 ```env
 VITE_API_URL=http://localhost:5000
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```
 
-### 5️⃣ Run the Application
-
-Run both the server and client concurrently in separate terminal windows:
-
-**Terminal 1 (Backend):**
+### Run the app
 ```bash
+# terminal 1
 cd server
 npm run server
-```
 
-**Terminal 2 (Frontend):**
-```bash
+# terminal 2
 cd client
 npm run dev
 ```
 
-🌐 Open [http://localhost:5173](http://localhost:5173) in your browser to view the application!
+Open `http://localhost:5173` in your browser.
 
----
+***
 
-## 🔮 Future Roadmap
+## 🔮 Roadmap
 
-- ⬜ **Advanced AI Analytics:** Use AI to predict the best time to post based on historical engagement data.
-- ⬜ **Multi-Workspace Support:** Allow agency users to switch between different client workspaces.
-- ⬜ **Mobile Application:** A React Native companion app for scheduling on-the-go.
-- ⬜ **Automated Reports:** Weekly PDF summaries of social growth sent directly to users' emails.
+- 📈 Advanced AI analytics for post timing prediction.
+- 🏢 Multi-workspace support for agencies.
+- 📱 Mobile companion app with React Native.
+- 🧾 Automated weekly PDF growth reports.
 
----
+***
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! 
-Feel free to check the [issues page](https://github.com/Aadityaanand2002/Social-Scheduler/issues) if you want to contribute.
+Contributions, issues, and feature requests are welcome.
+Please open an issue or submit a pull request to improve the platform.
+
+***
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Distributed under the MIT License.
+See the [LICENSE](LICENSE) file for more information.
 
----
+***
+
 <div align="center">
-  <i>Designed by <b>Aditya Anand</b></i>
+  <sub>Designed with ⚫⚪🔵 by <b>Aditya Anand</b></sub>
 </div>
