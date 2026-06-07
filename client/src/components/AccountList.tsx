@@ -27,8 +27,8 @@ export type { Account }
 const PLATFORM_ACCENT: Record<string, string> = {
   instagram: "from-pink-500 via-rose-500 to-orange-400",
   twitter: "from-slate-800 to-slate-900",
-  linkedin: "from-rose-600 to-rose-700",
-  facebook: "from-rose-500 to-rose-600",
+  linkedin: "from-sky-500 to-blue-700",
+  facebook: "from-blue-500 to-blue-700",
 }
 
 const AccountList = ({
@@ -85,11 +85,21 @@ const AccountList = ({
         return (
           <div
             key={account._id}
-            className="group relative flex items-center gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-md animate-fade-in-up"
+            className="group relative flex items-center gap-4 rounded-3xl p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md animate-fade-in-up"
             style={{ animationDelay: `${index * 0.08}s` }}
           >
-            {/* Top accent gradient line on hover */}
-            <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
+            {/* Base static border that shows when not hovered */}
+            <div className="absolute inset-0 rounded-3xl bg-slate-200 group-hover:opacity-0 transition-opacity duration-300 z-0" />
+            
+            {/* Rotating Border Layer */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+              <div className="absolute -left-[50%] -top-[50%] w-[200%] h-[200%] animate-[spin_3s_linear_infinite]">
+                <div className={`w-full h-1/2 bg-gradient-to-r ${accent}`} />
+              </div>
+            </div>
+            
+            {/* Inner background cover to expose exactly 2px of the border layers */}
+            <div className="absolute inset-[2px] bg-white rounded-[22px] z-0" />
 
             <div className="relative shrink-0 z-10">
               <div

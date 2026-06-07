@@ -7,4 +7,5 @@ const activityLogSchema = new mongoose.Schema({
     platform: { type: String },
     aiGeneratedText: { type: String },
 }, { timestamps: true });
+activityLogSchema.index({ user: 1, createdAt: -1 });
 export const ActivityLog = mongoose.model("ActivityLog", activityLogSchema);

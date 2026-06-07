@@ -3,13 +3,16 @@ import { User } from "../models/User.js";
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
 const priceIds = {
-    Pro: process.env.STRIPE_PRO_PRICE_ID,
-    Agency: process.env.STRIPE_AGENCY_PRICE_ID,
+    pro: process.env.STRIPE_PRO_PRICE_ID,
+    agency: process.env.STRIPE_AGENCY_PRICE_ID,
+    "pro yearly": process.env.STRIPE_PRO_YEARLY_PRICE_ID,
+    "agency yearly": process.env.STRIPE_AGENCY_YEARLY_PRICE_ID,
 };
 const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
 export const createCheckoutSession = async (req, res) => {
     try {
-        const { plan } = req.body;
+        const rawPlan = req.body.plan;
+        const plan = rawPlan?.toLowerCase();
         if (!plan || !(plan in priceIds)) {
             res.status(400).json({ message: "Please choose a valid paid plan." });
             return;
@@ -23,11 +26,13 @@ export const createCheckoutSession = async (req, res) => {
             res.status(500).json({ message: `${plan} price is missing from the server configuration.` });
             return;
         }
+        const basePlan = plan.replace(" yearly", "");
+        const interval = plan.includes("yearly") ? "yearly" : "monthly";
         const session = await stripe.checkout.sessions.create({
             mode: "subscription",
             line_items: [{ price: priceId, quantity: 1 }],
-            success_url: `${clientUrl}/checkout/success?plan=${plan.toLowerCase()}&session_id={CHECKOUT_SESSION_ID}`,
-            metadata: { plan: plan.toLowerCase(), userId: req.user._id.toString() },
+            success_url: `${clientUrl}/checkout/success?plan=${basePlan}&interval=${interval}&session_id={CHECKOUT_SESSION_ID}`,
+            metadata: { plan: basePlan, userId: req.user._id.toString() },
             cancel_url: `${clientUrl}/#pricing`,
             allow_promotion_codes: true,
             billing_address_collection: "auto",
@@ -59,8 +64,18 @@ export const confirmSession = async (req, res) => {
             res.status(400).json({ message: "Purchased plan could not be determined." });
             return;
         }
+        let planExpiryDate;
+        if (session.subscription) {
+            const subscription = await stripe.subscriptions.retrieve(session.subscription);
+            if (subscription && subscription.current_period_end) {
+                planExpiryDate = new Date(subscription.current_period_end * 1000);
+            }
+        }
+        if (!planExpiryDate) {
+            planExpiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        }
         // Use the authenticated user's ID instead of trusting the request body
-        const user = await User.findByIdAndUpdate(req.user._id, { planType: plan }, { new: true });
+        const user = await User.findByIdAndUpdate(req.user._id, { planType: plan, planExpiryDate }, { returnDocument: 'after' });
         if (!user) {
             res.status(404).json({ message: "User not found." });
             return;
@@ -73,6 +88,7 @@ export const confirmSession = async (req, res) => {
                 email: user.email,
                 phone: user.phone,
                 planType: user.planType,
+                planExpiryDate: user.planExpiryDate,
                 createdAt: user.createdAt,
             },
         });

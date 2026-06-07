@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false // Optional for Google Login users
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
     },
     name: {
         type: String,
@@ -17,13 +22,25 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     planType: {
         type: String,
         enum: ["starter", "pro", "agency"],
         default: "starter"
     },
+    planExpiryDate: {
+        type: Date
+    },
     zernioProfileId: {
         type: String
+    },
+    profilePicture: {
+        type: String,
+        default: ""
     }
 }, { timestamps: true });
 export const User = mongoose.model("User", userSchema);

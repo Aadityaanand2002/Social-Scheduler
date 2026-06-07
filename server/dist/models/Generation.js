@@ -7,4 +7,5 @@ const generationSchema = new mongoose.Schema({
     mediaType: { type: String, enum: ["image", "video"] },
     tone: { type: String }
 }, { timestamps: true });
+generationSchema.index({ user: 1, createdAt: -1 });
 export const Generation = mongoose.model("Generation", generationSchema);

@@ -12,6 +12,7 @@ import {
   RefreshCwIcon,
 } from "lucide-react";
 import api from "../api/axios";
+import DateTimePicker from "../components/DateTimePicker";
 
 interface SchedulerPost {
   _id: string;
@@ -307,15 +308,14 @@ const Scheduler = () => {
                 </div>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date</label>
-                <input type="date" value={scheduledDate} onChange={(e) => setScheduledDate(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 font-medium focus:bg-white focus:ring-1 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder-slate-400" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Time</label>
-                <input type="time" value={scheduledTime} onChange={(e) => setScheduledTime(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 font-medium focus:bg-white focus:ring-1 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder-slate-400" />
-              </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Schedule For</label>
+              <DateTimePicker 
+                date={scheduledDate} 
+                time={scheduledTime} 
+                onDateChange={setScheduledDate} 
+                onTimeChange={setScheduledTime} 
+              />
             </div>
             <div className="flex gap-3">
               <button type="submit" disabled={loading || (plan ? !plan.canSchedulePost : false)} className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-all hover:bg-slate-800 shadow-md border border-transparent hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:bg-slate-300 disabled:text-slate-500 disabled:hover:translate-y-0 disabled:shadow-none">

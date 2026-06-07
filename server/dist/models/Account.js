@@ -10,4 +10,5 @@ const accountSchema = new mongoose.Schema({
     status: { type: String, enum: ["connected", "disconnected"], default: "connected" },
     avatarUrl: { type: String },
 }, { timestamps: true });
+accountSchema.index({ user: 1, status: 1 });
 export const Account = mongoose.model("Account", accountSchema);

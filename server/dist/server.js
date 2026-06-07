@@ -8,6 +8,7 @@ import accountRouter from "./routes/accountRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import activityRouter from "./routes/activityRoutes.js";
 import billingRouter from "./routes/billingRoutes.js";
+import supportRouter from "./routes/supportRoutes.js";
 import { initScheduler } from "./services/schedulerService.js";
 const app = express();
 const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
@@ -24,6 +25,7 @@ app.use("/api/accounts", accountRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/activity", activityRouter);
 app.use("/api/billing", billingRouter);
+app.use("/api/support", supportRouter);
 initScheduler();
 app.use((err, _req, res, _next) => {
     console.error(err);

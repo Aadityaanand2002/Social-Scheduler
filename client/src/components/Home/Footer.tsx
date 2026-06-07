@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { AnimatedLogo } from "../AnimatedLogo";
 
 const footerLinks = {
     Product: ["Features", "How it works", "Pricing", "Changelog"],
@@ -14,7 +15,7 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="lg:col-span-2">
                         <Link to="/" onClick={() => scrollTo(0, 0)} className="inline-flex items-center gap-3 mb-8 group">
-                            <img src="/logo.svg" alt="logo" className="size-8 group-hover:scale-105 transition-transform" />
+                            <AnimatedLogo className="size-8 group-hover:scale-105 transition-transform" />
                             <span className="font-bold tracking-tight text-3xl text-slate-900">Scheduler</span>
                         </Link>
                         <p className="text-lg text-slate-600 font-medium leading-relaxed max-w-sm tracking-tight mb-8">

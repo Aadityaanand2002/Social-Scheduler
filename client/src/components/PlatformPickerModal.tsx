@@ -19,8 +19,8 @@ const PlatformPickerModal = ({
   onConnect,
 }: PlatformPickerModalProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-200">
+    <div className="fixed inset-x-0 top-16 z-50 flex justify-center p-4 animate-fade-in pointer-events-none">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden flex flex-col max-h-[80vh] pointer-events-auto">
         <div className="flex items-center justify-between px-6 py-4 shadow-sm border-b border-slate-100">
           <h3 className="text-slate-900 font-bold">Choose a Platform</h3>
 
@@ -32,7 +32,7 @@ const PlatformPickerModal = ({
           </button>
         </div>
 
-        <div className="p-6 flex flex-col gap-2">
+        <div className="p-6 flex flex-col gap-2 overflow-y-auto custom-scrollbar">
           {PLATFORMS.map((p) => {
             const isConnected = connectedIds.includes(p.id)
             const isConnecting = connecting === p.id
@@ -90,6 +90,15 @@ const PlatformPickerModal = ({
               </button>
             )
           })}
+        </div>
+
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-6 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50 hover:text-slate-900 transition-all"
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

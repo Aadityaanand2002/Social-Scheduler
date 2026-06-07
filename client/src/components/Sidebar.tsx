@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { AnimatedLogo } from "./AnimatedLogo";
 
 const Sidebar = ({
   isOpen,
@@ -46,9 +47,7 @@ const Sidebar = ({
     >
       <div className="p-6 pb-4">
         <div className="text-xl tracking-tight text-slate-900 flex items-center gap-2.5 font-black">
-          <div className="flex items-center justify-center size-8 rounded-xl bg-slate-900 text-white shadow-md shadow-slate-900/20">
-            <HourglassIcon className="size-4" />
-          </div>
+          <AnimatedLogo className="size-8 bg-slate-900 text-white shadow-md shadow-slate-900/20" iconClassName="size-4" />
           Scheduler
         </div>
       </div>

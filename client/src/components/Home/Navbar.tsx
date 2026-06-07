@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { AnimatedLogo } from "../AnimatedLogo";
 
 export default function Navbar() {
     const { user } = useAuth();
@@ -10,7 +11,7 @@ export default function Navbar() {
             <div className="px-6 sm:px-8 h-20 flex items-center justify-between">
                 <Link to="/" onClick={() => scrollTo(0, 0)} className="flex items-center gap-3 group">
                     <div className="relative">
-                        <img src="/logo.svg" alt="logo" className="relative z-10 size-12 rounded-[8px] group-hover:scale-110 transition-all duration-500 object-cover shadow-sm" />
+                        <AnimatedLogo className="size-12 bg-white text-slate-900 group-hover:scale-110" iconClassName="size-7" />
                         <div className="absolute inset-0 bg-blue-300 rounded-xl blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
                     </div>
                     <span className="text-2xl font-extrabold tracking-tighter text-slate-900 hidden sm:block">Scheduler</span>

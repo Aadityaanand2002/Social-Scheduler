@@ -5,6 +5,7 @@ import { MailIcon, LockIcon, ArrowRightIcon, User2Icon, PhoneIcon, LoaderCircleI
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import api from "../api/axios";
+import { AnimatedLogo } from "../components/AnimatedLogo";
 
 const paidPlans = new Set(["pro", "agency"]);
 
@@ -155,7 +156,7 @@ export default function Login() {
                     {/* Top Section: Logo & Text */}
                     <div className="w-full max-w-xl shrink-0 mx-auto lg:mx-0">
                         <div className="flex items-center gap-2 mb-4">
-                            <img src="/logo.svg" alt="Logo" className="size-6 xl:size-7" />
+                            <AnimatedLogo className="size-6 xl:size-7 bg-white text-slate-900" iconClassName="size-4" />
                             <span className="text-lg xl:text-xl font-extrabold tracking-tighter text-slate-900">Scheduler</span>
                         </div>
                         <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter leading-tight mb-3 text-slate-900">
@@ -262,7 +263,7 @@ export default function Login() {
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                         <div className="flex flex-col items-center mb-8">
                             <Link to="/" className="flex items-center gap-2 lg:hidden">
-                                <img src="/logo.svg" alt="Logo" className="size-6.5" />
+                                <AnimatedLogo className="size-6.5 bg-white text-slate-900" iconClassName="size-4" />
                                 <h1 className="text-2xl">Scheduler</h1>
                             </Link>
                             <h2 className="text-2xl font-semibold text-slate-900 mt-2 lg:mt-0">
